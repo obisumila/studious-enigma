@@ -18,7 +18,7 @@ else
     PROCESSES=1
 fi
 
-COMMAND_BASE="./ore-mine-pool-linux-aarch64 worker --worker-wallet-address ${WORKER_WALLET_ADDRESS} >> worker.log 2>&1"
+COMMAND_BASE="./ore-mine-pool-linux worker --worker-wallet-address ${WORKER_WALLET_ADDRESS} >> worker.log 2>&1"
 
 # 启动进程的函数，绑定到指定的NUMA节点
 start_process_numa() {
@@ -51,10 +51,10 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 sleep 5
 
 while true; do
-    num=`ps aux | grep -w ore-mine-pool-linux-aarch64 | grep -v grep |wc -l`
+    num=`ps aux | grep -w ore-mine-pool-linux | grep -v grep |wc -l`
     if [ "${num}" -lt "$PROCESSES" ];then
         echo "Num of processes is less than $PROCESSES restart it ..."
-        killall -9 ore-mine-pool-linux-aarch64
+        killall -9 ore-mine-pool-linux
         start_process
     else
         echo "Process is running"
